@@ -4,7 +4,7 @@
     <van-tabbar :route="true">
       <van-tabbar-item icon="home-o" to="/">答题</van-tabbar-item>
       <van-tabbar-item icon="chart-trending-o" to="/topn">排行榜</van-tabbar-item>
-      <van-tabbar-item icon="friends-o" to="/login">我</van-tabbar-item>
+      <van-tabbar-item icon="friends-o" to="me">我</van-tabbar-item>
     </van-tabbar>
   </div>
 </template>

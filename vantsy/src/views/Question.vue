@@ -2,11 +2,11 @@
   <div>
     <van-nav-bar :title="catName" left-text="返回" left-arrow @click-left="$router.back()" />
 
-    <van-tabs @click="changType">
-      <van-tab :title="'全部(' + total + ')'"></van-tab>
-      <van-tab :title="'作对的(' + right + ')'"></van-tab>
-      <van-tab :title="'做错的(' + wrong + ')'"></van-tab>
-      <van-tab :title="'未做的(' + undo + ')'"></van-tab>
+    <van-tabs v-model="questionsType" @click="changType">
+      <van-tab name="all" :title="'全部(' + total + ')'"></van-tab>
+      <van-tab name="right" :title="'作对的(' + right + ')'"></van-tab>
+      <van-tab name="wrong" :title="'做错的(' + wrong + ')'"></van-tab>
+      <van-tab name="undo" :title="'未做的(' + undo + ')'"></van-tab>
     </van-tabs>
     <!-- 显示题目 -->
     <div class="ti">
@@ -30,16 +30,25 @@
 
 <script>
 export default {
+  created () {
+    this.$http.get(`/categories/${this.$route.params.id}/questions_count_info`).then(res => {
+      this.total = res.data.data.total
+      this.right = res.data.data.right
+      this.wrong = res.data.data.wrong
+      this.undo = res.data.data.undo
+    })
+  },
   data () {
     return {
+      questionsType: 'all',
       answer: [],
       showAnswer: false,
       alph: ['A', 'B', 'C', 'D'],
       catName: sessionStorage.getItem('catName'),
-      total: 10,
-      right: 8,
-      wrong: 1,
-      undo: 1,
+      total: 0,
+      right: 0,
+      wrong: 0,
+      undo: 0,
       cur_que: 0,
       questions: []
     }
@@ -56,36 +65,16 @@ export default {
         alert('不能为空')
         return false
       }
-      //   if (this.answer === this.questions[this.cur_que].right) {
-      //     alert('成功')
-      //   } else {
-      //     alert('失败')
-      //   }
+      if (this.answer === this.questions[this.cur_que].right) {
+        alert('成功')
+      } else {
+        alert('失败')
+      }
     },
     getQuestions () {
-      this.questions = [
-        {
-          id: 1,
-          title: 'P标签的用途?',
-          options: '跳转,登陆,图片,段落',
-          right: 3,
-          category_id: 1
-        },
-        {
-          id: 2,
-          title: 'A标签的用途?',
-          options: '跳转,登陆,图片,段落',
-          right: 0,
-          category_id: 1
-        },
-        {
-          id: 3,
-          title: 'img标签的用途?',
-          options: '跳转,登陆,图片,段落',
-          right: 2,
-          category_id: 1
-        }
-      ]
+      this.$http.get(`/categories/${this.$route.params.id}/questions?type=${this.questionsType}`).then(res => {
+        this.questions = res.data.data
+      })
     },
     changType () {
       this.questions = []
