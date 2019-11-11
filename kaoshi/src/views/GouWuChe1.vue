@@ -68,45 +68,53 @@ export default {
         })
     },
     addCategories (id) {
-      let Id = this.categor.findIndex(Id => Id.id === id)
-      // console.log(Id)
-      if (Id === -1) {
-        this.categor.push({ id: id, count: 1 })
-        // console.log(this.categor)
-      } else {
-        this.categor[Id].count++
-      }
-      this.$parent.num++
-      localStorage.setItem('id', JSON.stringify(this.categor))
-    }
-    // addCategories (id) {
-    //   // (1)先取出来保存的商品 然后转回对象
-    //   let cart = JSON.parse(localStorage.getItem('cart'))
+      // (1)先取出来保存的商品 然后转回对象
+      let cart = JSON.parse(localStorage.getItem('cart'))
 
-    //   // 判断购物车中是否有这件商品
-    //   if (cart.ids.indexOf(id) === -1) {
-    //     cart.ids.push(id)
-    //   } else {
-    //     cart.info[id].count++
-    //   }
-    //   // (2)修改cart
-    //   cart.ids.push(id)
-    //   cart.info[id] = {
-    //     count: 1,
-    //     ischk: true
-    //   }
-    //   // let cart = {
-    //   //   ids: [id], // 保存所有的商品
-    //   //   info: {
-    //   //     id: { //  使用id作建
-    //   //       count: 1,
-    //   //       ischk: true // 默认勾选
-    //   //     }
-    //   //   }
-    //   // }
-    //   // (3)在保存到浏览器中
-    //   localStorage.setItem('cart', JSON.stringify(cart))
-    // }
+      // 判断购物车中是否有这件商品
+      if (cart === null) {
+        // 先把cart设置成一个对象
+        cart = {
+          ids: [id],
+          info: {
+            [id]: {
+              // [id]: 解析id的值 使用id的值作为建
+              count: 1,
+              ischk: true
+            }
+          }
+        }
+      } else {
+        //   判断购物车中是否已经有这件商品的ID
+        if (cart.ids.indexOf(id) === -1) {
+          cart.ids.push(id)
+          cart.info[id] = {
+            count: 1,
+            ischk: true
+          }
+        } else {
+          cart.info[id].count++
+        }
+      }
+
+      //   // (2)修改cart
+      //   cart.ids.push(id)
+      //   cart.info[id] = {
+      //     count: 1,
+      //     ischk: true
+      //   }
+      // let cart = {
+      //   ids: [id], // 保存所有的商品
+      //   info: {
+      //     id: { //  使用id作建
+      //       count: 1,
+      //       ischk: true // 默认勾选
+      //     }
+      //   }
+      // }
+      // (3)在保存到浏览器中
+      localStorage.setItem('cart', JSON.stringify(cart))
+    }
   }
 }
 </script>

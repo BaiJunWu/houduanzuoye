@@ -12,6 +12,22 @@ const routes = [
   {
     path: '/about',
     component: () => import('../views/About.vue')
+  },
+  {
+    path: '/me',
+    component: () => import('../views/Me.vue')
+  },
+  {
+    path: '/login',
+    component: () => import('../views/Login.vue')
+  },
+  {
+    path: '/guc',
+    component: () => import('../views/GouWuChe1.vue')
+  },
+  {
+    path: '/gucc',
+    component: () => import('../views/GouWuChe2.vue')
   }
 ]
 

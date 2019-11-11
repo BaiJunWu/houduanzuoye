@@ -74,22 +74,32 @@ app.get('/api/v1/index_goods', (req, res) => {
     })
 })
 
-app.get(`/api/v1/index_goods/:id(\\d+)`, (req, res) => {
-    let sql = `select * from index_goods where id=?`
+app.get(`/api/v1/index_good`, (req, res) => {
+    let id = req.query.id
+    // console.log(id)
+    // 拼问号
+    let wenhao = []  // 把所有的问号都存在这这个数组里面
+    // 所有的id都用，隔开
+    id = id.split(',')
+    // 循环id这个数组把？存进wenhao数组中
+    id.forEach(v => {
+        wenhao.push('?')
+    })
+    // 把wenhao的数组转换成字符串
+    wenhao = wenhao.join(',')
+    let sql = `SELECT * FROM index_goods WHERE id IN(${wenhao})`
     
-    // let sql = `select * from index_goods WHERE set ?`
-    // 获取id
-    let id = req.params.id
-    db.query(sql, id, (err, results, fields) => {
+    db.query(sql, id, (err, data) => {
         if (err) {
             res.json({
-                "code": 400,
+                "code": 0,
                 "error": err
             })
         } else {
             res.json({
-                "code": 200,
-                "data": results[0]
+                "code": 1,
+                'sql': sql,
+                "data": data
             })
         }
     })
