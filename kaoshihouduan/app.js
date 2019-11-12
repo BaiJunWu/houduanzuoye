@@ -105,6 +105,11 @@ app.get(`/api/v1/index_good`, (req, res) => {
     })
 })
 
+// app.post(`/api/v1/user`, (req, res) => {
+//     const name = req.body.name
+//     console.log(name)
+// })
+
 app.listen(9999, () => {
     console.log('成功！监听：127.0.0.1:9999')
 })
