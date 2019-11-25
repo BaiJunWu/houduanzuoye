@@ -38,6 +38,7 @@ export default {
     if (this.cart !== null) {
       // 把商品id转换成字符串
       this.$http.get('/index_good?id=' + this.cart.ids.join(',')).then(res => {
+        // console.log(res)
         this.goods = res.data.data
       })
     }
@@ -76,19 +77,19 @@ export default {
       })
       return sum * 100
     }
-  },
+  }
   //   监听器 监听一个数据 当这个数据发生变化时触发一个函数
   //   注意 如果监听的数据是一个对象 那么需要深度监听
-  watch: {
-    // 监听cart对象
-    cart: {
-      deep: true, // 深度监听 (监听对象时)
-      headler: function () {
-        // 把cart写道浏览器中
-        localStorage.setItem('cart', JSON.stringify(this.cart))
-      }
-    }
-  }
+  // watch: {
+  //   // 监听cart对象
+  //   cart: {
+  //     deep: true, // 深度监听 (监听对象时)
+  //     headler: function () {
+  //       // 把cart写道浏览器中
+  //       localStorage.setItem('cart', JSON.stringify(this.cart))
+  //     }
+  //   }
+  // }
 }
 </script>
 

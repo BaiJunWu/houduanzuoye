@@ -28,6 +28,10 @@ const routes = [
   {
     path: '/gucc',
     component: () => import('../views/GouWuChe2.vue')
+  },
+  {
+    path: '/zhuce',
+    component: () => import('../views/zhuce.vue')
   }
 ]
 

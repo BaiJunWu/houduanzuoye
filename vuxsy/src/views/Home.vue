@@ -49,6 +49,7 @@
 
     <van-submit-bar :price="totalPrice" button-text="提交订单">
       <van-checkbox v-model="chkAll">全选</van-checkbox>
+      <van-button type="primary" @click="deleteGood()">删除所选</van-button>
       <span slot="tip">
         你的收货地址不支持同城送,
         <span>修改地址</span>
@@ -61,28 +62,26 @@
 export default {
   created () {
     let cart = JSON.parse(localStorage.getItem('cart'))
-    // console.log(cart)
     this.cart = cart
-    // console.log(this.cart)
   },
   data () {
     return {
       name: '',
       parce: '',
       num: '',
-      cart: { total: 0 },
-
+      cart: [],
       index: 0
     }
   },
   methods: {
     deleteGoods (index) {
-      // console.log(index)
       this.cart.splice(index, 1)
     },
-    // addCategori () {
-    //   let num = Number(this.)
-    // },
+    deleteGood () {
+      this.cart = this.cart.filter(function (val) {
+        return !val.ischk
+      })
+    },
     addCategories () {
       let name = this.cart.findIndex(name => name.name === this.name)
       // console.log(name)
