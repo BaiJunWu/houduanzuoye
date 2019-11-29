@@ -1,5 +1,5 @@
 <template>
-  <div class="cart">
+  <div class="cart" v-if="this.goods.length > 0">
     <van-nav-bar title="购物车" />
     <!-- 商品列表 -->
     <van-checkbox
@@ -17,6 +17,7 @@
     </van-checkbox>
     <van-submit-bar :price="totalPrice" button-text="提交订单">
       <van-checkbox v-model="chkAll">全选</van-checkbox>
+      <van-button type="primary" @click="deleteGood()">删除所选</van-button>
       <span slot="tip">
         你的收货地址不支持同城送,
         <span>修改地址</span>
@@ -36,11 +37,30 @@ export default {
   created () {
     // console.log(this.cart)
     if (this.cart !== null) {
-      // 把商品id转换成字符串
+      // 把商品id转换成字符串 获取数据
       this.$http.get('/index_good?id=' + this.cart.ids.join(',')).then(res => {
         // console.log(res)
         this.goods = res.data.data
+
+        // this.goods.forEach(v => {
+        //   // console.log(this.cart.info[v.id].ischk)
+        //   v.push(this.cart.info[v.id].ischk)
+        //   console.log(v)
+        // })
+        // console.log(this.goods)
       })
+    }
+  },
+  methods: {
+    deleteGood () {
+      // console.log(this.cart.info)
+      // this.goods.forEach(v => {
+      //   // console.log(v)
+      //   this.cart.info[v.id] = this.cart.info[v.id].filter(function (val) {
+      //     // console.log(val)
+      //     return !val.ischk
+      //   })
+      // })
     }
   },
   //   计算属性 当一个数据需要计算的时候
@@ -77,7 +97,7 @@ export default {
       })
       return sum * 100
     }
-  }
+  },
   //   监听器 监听一个数据 当这个数据发生变化时触发一个函数
   //   注意 如果监听的数据是一个对象 那么需要深度监听
   // watch: {
@@ -90,6 +110,15 @@ export default {
   //     }
   //   }
   // }
+  watch: {
+    cart: {
+      deep: true, // 深度监听（监听对象时）
+      handler: function () {
+        // 把 cart 写到浏览器中
+        localStorage.setItem('cart', JSON.stringify(this.cart))
+      }
+    }
+  }
 }
 </script>
 
